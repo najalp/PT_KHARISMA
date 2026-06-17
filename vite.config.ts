@@ -5,7 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/PT_KHARISMA/',
+    base: './',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
