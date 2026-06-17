@@ -11,6 +11,7 @@ export default function InquiryForm({ defaultProjectSlug }: { defaultProjectSlug
     houseType: "",
     employmentType: "asn",
     estimatedTenor: 15,
+    budgetRange: "",
     message: "",
   });
 
@@ -61,6 +62,7 @@ export default function InquiryForm({ defaultProjectSlug }: { defaultProjectSlug
       `- No. WhatsApp: ${formData.phoneNumber}\n` +
       `- Pekerjaan: ${employmentLabels[formData.employmentType] || formData.employmentType}\n` +
       `- Proyek Minat: ${projectLabel} ${typeLabel}\n` +
+      (formData.budgetRange ? `- Range Budget: ${formData.budgetRange}\n` : "") +
       `- Estimasi Rencana Tenor KPR: ${formData.estimatedTenor} Tahun\n` +
       `- Catatan Tambahan: ${formData.message || "Tolong rincian brosur lengkap."}\n\n` +
       `Mohon dihubungi lebih lanjut untuk jadwalkan survey show unit lapangan. Terima kasih!`
@@ -110,6 +112,7 @@ export default function InquiryForm({ defaultProjectSlug }: { defaultProjectSlug
                   houseType: "",
                   employmentType: "asn",
                   estimatedTenor: 15,
+                  budgetRange: "",
                   message: "",
                 });
               }}
@@ -227,6 +230,24 @@ export default function InquiryForm({ defaultProjectSlug }: { defaultProjectSlug
                 <option value={25}>25 Tahun (Cicilan Termurah)</option>
               </select>
             </div>
+
+            {/* Budget Range (Optional) */}
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-2">Estimasi Budget / Harga (Opsional)</label>
+              <select
+                name="budgetRange"
+                value={formData.budgetRange}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-hidden focus:border-emerald-accent bg-white"
+              >
+                <option value="">-- Belum Menentukan --</option>
+                <option value="< 300 Juta">Di bawah Rp 300 Juta</option>
+                <option value="300-500 Juta">Rp 300 - 500 Juta</option>
+                <option value="500-800 Juta">Rp 500 - 800 Juta</option>
+                <option value="800-1.5 Milyar">Rp 800 Jt - 1.5 Milyar</option>
+                <option value="> 1.5 Milyar">Di atas Rp 1.5 Milyar</option>
+              </select>
+            </div>
           </div>
 
           {/* Special Incentive Display based on occupation */}
@@ -274,7 +295,7 @@ export default function InquiryForm({ defaultProjectSlug }: { defaultProjectSlug
             ) : (
               <>
                 <Send className="h-4.5 w-4.5" />
-                Kirim Formulir Konsultasi
+                Saya Tertarik
               </>
             )}
           </button>

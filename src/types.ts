@@ -72,5 +72,6 @@ export interface InquiryFormData {
   houseType: string;
   employmentType: "asn" | "private" | "entrepreneur" | "other";
   estimatedTenor: number; // years
+  budgetRange?: string; // optional budget range
   message: string;
 }

@@ -12,13 +12,15 @@ import AboutView from "./views/AboutView";
 import MortgageCalculator from "./components/MortgageCalculator";
 import { Landmark, ArrowRight, ShieldCheck, BadgeCheck } from "lucide-react";
 import { COMPANY_DETAILS } from "./data/mockData";
+import FloatingWhatsApp from "./components/FloatingWhatsApp";
+import MobileStickyCTA from "./components/MobileStickyCTA";
 
 export default function App() {
   const [currentView, setView] = useState<string>("home");
   const [selectedProjectSlug, setSelectedProjectSlug] = useState<string>("d-royal-kharisma");
 
   return (
-    <div className="min-h-screen bg-white text-gray-800 flex flex-col font-sans select-none antialiased">
+    <div className="min-h-screen bg-white text-gray-800 flex flex-col font-sans select-none antialiased pb-16 sm:pb-0 relative">
       {/* 1. Header Navigation Component */}
       <Header currentView={currentView} setView={setView} />
 
@@ -94,6 +96,10 @@ export default function App() {
 
       {/* 3. Footer Branding Component */}
       <Footer setView={setView} />
+
+      {/* 4. Global Conversion Components */}
+      <FloatingWhatsApp />
+      <MobileStickyCTA />
     </div>
   );
 }

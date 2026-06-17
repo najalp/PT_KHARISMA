@@ -239,7 +239,7 @@ export default function MortgageCalculator({ initialProjectSlug }: { initialProj
             <input
               type="range"
               min={5}
-              max={25}
+              max={20}
               step={5}
               value={tenor}
               onChange={(e) => setTenor(Number(e.target.value))}
@@ -249,8 +249,7 @@ export default function MortgageCalculator({ initialProjectSlug }: { initialProj
               <span>5 Tahun</span>
               <span>10 Thn</span>
               <span>15 Thn</span>
-              <span>20 Thn</span>
-              <span>25 Tahun</span>
+              <span>20 Tahun</span>
             </div>
           </div>
 
@@ -301,28 +300,33 @@ export default function MortgageCalculator({ initialProjectSlug }: { initialProj
             </div>
 
             <div className="flex justify-between items-center text-sm">
-              <span className="text-white/70">Plafond Pembiayaan Bank</span>
-              <span className="font-mono text-white font-semibold">{formatIDR(price - dpValue)}</span>
-            </div>
-
-            <div className="flex justify-between items-center text-sm">
               <span className="text-white/70">Suku Bunga Efektif</span>
               <span className="font-mono text-gold-accent font-bold">{interestRate}% p.a (Flat)</span>
             </div>
 
-            <div className="bg-emerald-950 p-5 rounded-2xl border border-emerald-800/60 mt-4 shadow-inner">
-              <span className="text-xs text-white/50 block font-mono">ANGSURAN BULANAN</span>
-              <span className="font-display font-bold text-3xl text-gold-accent block mt-1 font-mono tracking-tight">
-                {formatIDR(installment)}
-                <span className="text-sm text-white/70 font-normal"> /bulan</span>
-              </span>
+            <div className="bg-emerald-950 p-5 rounded-2xl border border-emerald-800/60 mt-4 shadow-inner space-y-4">
+              <div>
+                <span className="text-[10px] text-white/50 block font-mono">TOTAL PINJAMAN / PLAFOND</span>
+                <span className="font-display font-bold text-2xl text-white block mt-0.5 font-mono tracking-tight">
+                  {formatIDR(price - dpValue)}
+                </span>
+              </div>
+              
+              <div className="border-t border-emerald-800/60 pt-4">
+                <span className="text-[10px] text-white/50 block font-mono">ANGSURAN BULANAN ESTIMASI</span>
+                <span className="font-display font-extrabold text-3xl text-gold-accent block mt-1 font-mono tracking-tight bg-clip-text">
+                  {formatIDR(installment)}
+                  <span className="text-sm text-white/70 font-normal"> /bulan</span>
+                </span>
+              </div>
+              
               <div className="border-t border-emerald-800/60 pt-3 mt-3">
-                <span className="text-[10px] text-white/50 block font-mono">MINIMUM PASANGAN PENGHASILAN</span>
+                <span className="text-[10px] text-white/50 block font-mono">MINIMUM GABUNGAN PENGHASILAN</span>
                 <span className="font-mono font-bold text-sm text-white mt-0.5 block">
                   {formatIDR(requiredMinIncome)} <span className="text-[10px] font-normal text-white/60">/bln</span>
                 </span>
                 <p className="text-[9px] text-white/40 mt-1 leading-normal">
-                  *Rasio aman bank (angsuran maksimal 33% dari gabungan pendapatan bersih bulanan).
+                  *Rasio aman bank (angsuran maksimal 33% dari pendapatan bersih).
                 </p>
               </div>
             </div>

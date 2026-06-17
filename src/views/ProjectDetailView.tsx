@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { 
   Building, MapPin, CheckCircle, Flame, Grid, Compass, LandPlot, ShieldAlert,
-  BedDouble, Bath, ChevronRight, PhoneCall, FileText, Map, Sparkles, ShieldCheck
+  BedDouble, Bath, ChevronRight, PhoneCall, FileText, Map, Sparkles, ShieldCheck,
+  CheckCircle2, MessageCircle, CalendarCheck, Calculator, Tag
 } from "lucide-react";
 import { ACTIVE_PROJECTS, COMPANY_DETAILS } from "../data/mockData";
 import GalleryViewer from "../components/GalleryViewer";
 import InquiryForm from "../components/InquiryForm";
+import MortgageCalculator from "../components/MortgageCalculator";
 
 interface ProjectDetailViewProps {
   projectSlug: string;
@@ -29,11 +31,9 @@ export default function ProjectDetailView({ projectSlug, setView }: ProjectDetai
   const [selectedTypeIdx, setSelectedTypeIdx] = useState<number>(0);
   const selectedType = project.typesList[selectedTypeIdx];
 
-  const handleWhatsAppInquiry = (typeName?: string) => {
+  const handleWhatsAppInquiry = (intent: string = "bertanya informasi") => {
     const textStr = encodeURIComponent(
-      `Halo Sales PT Kharisma Bangun Banua, saya tertarik dengan informasi perumahan ${project.name} ${
-        typeName ? `khususnya Tipe ${typeName}` : ""
-      }. Boleh rincikan brosur lengkap, spesifikasi ulin, dan detail angsuran KPR-nya?`
+      `Halo Sales PT Kharisma Bangun Banua, saya ingin ${intent} perumahan ${project.name}. Boleh rincikan informasi lebih lanjut?`
     );
     window.open(`https://wa.me/${COMPANY_DETAILS.whatsappNumber.replace(/[^0-9]/g, "")}?text=${textStr}`, "_blank");
   };
@@ -106,20 +106,27 @@ export default function ProjectDetailView({ projectSlug, setView }: ProjectDetai
               {project.shortDescription}
             </p>
 
-            <div className="pt-6 flex flex-wrap gap-4 items-center">
-              <div>
-                <span className="text-[10px] text-gray-400 block uppercase font-medium">Investasi Mulai Dari:</span>
-                <span className="font-display font-extrabold text-2xl text-white font-mono">
-                  {formatIDRCompact(project.priceStart)}
-                </span>
-              </div>
-              <span className="text-gray-600 hidden sm:block">|</span>
+            <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 text-sm text-gray-200 font-medium">
+              <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> Lokasi Strategis</div>
+              <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> DP Ringan KPR</div>
+              <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> Legalitas SHM Aman</div>
+              <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> Investasi Menguntungkan</div>
+            </div>
+
+            <div className="pt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <button
-                onClick={() => handleWhatsAppInquiry()}
-                className="px-6 py-3 rounded-xl bg-emerald-accent hover:bg-gold-accent text-white hover:text-emerald-primary text-xs font-bold font-display tracking-wider uppercase shadow-md flex items-center gap-2 transition-all cursor-pointer"
+                onClick={() => handleWhatsAppInquiry("menjadwalkan survey lokasi")}
+                className="px-6 py-4 rounded-xl bg-gold-accent hover:bg-gold-bright text-emerald-primary text-xs font-bold font-display tracking-wider uppercase shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
-                <PhoneCall className="h-4.5 w-4.5" />
-                Dapatkan e-Brosur (WA)
+                <CalendarCheck className="h-4.5 w-4.5" />
+                Jadwalkan Survey
+              </button>
+              <button
+                onClick={() => handleWhatsAppInquiry("bertanya informasi")}
+                className="px-6 py-4 rounded-xl bg-emerald-accent/20 hover:bg-emerald-accent border border-emerald-accent/50 text-white text-xs font-bold font-display tracking-wider uppercase shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <MessageCircle className="h-4.5 w-4.5" />
+                Chat WhatsApp
               </button>
             </div>
           </div>
@@ -249,13 +256,53 @@ export default function ProjectDetailView({ projectSlug, setView }: ProjectDetai
                   </div>
 
                   <button
-                    onClick={() => handleWhatsAppInquiry(selectedType.nameName)}
+                    onClick={() => handleWhatsAppInquiry(`bertanya informasi spesifik Tipe ${selectedType.nameName}`)}
                     className="px-5 py-3 rounded-lg bg-emerald-accent hover:bg-emerald-primary text-white text-[11px] font-bold font-display tracking-wider uppercase shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-colors"
                   >
-                    <PhoneCall className="h-3.5 w-3.5" />
+                    <MessageCircle className="h-3.5 w-3.5" />
                     Tanyakan Unit Ini (WA)
                   </button>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Section: Property Highlights Section */}
+          <section className="bg-emerald-50 rounded-3xl p-6 sm:p-8 border border-emerald-100/50 shadow-xs">
+            <h2 className="font-display font-bold text-lg text-emerald-primary mb-4 flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-emerald-accent" />
+              Highlight Proyek {project.name}
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="bg-white p-4 rounded-xl border border-gray-105 shadow-xs">
+                <LandPlot className="h-6 w-6 text-emerald-accent mb-2" />
+                <span className="block text-[10px] text-gray-500 uppercase font-bold tracking-wider">Luas Tanah</span>
+                <span className="font-bold text-gray-900">{project.typesList[0]?.landSize}m² - {project.typesList[project.typesList.length - 1]?.landSize}m²</span>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-gray-105 shadow-xs">
+                <Building className="h-6 w-6 text-emerald-accent mb-2" />
+                <span className="block text-[10px] text-gray-500 uppercase font-bold tracking-wider">Luas Bangunan</span>
+                <span className="font-bold text-gray-900">{project.typesList[0]?.buildingSize}m² - {project.typesList[project.typesList.length - 1]?.buildingSize}m²</span>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-gray-105 shadow-xs">
+                <BedDouble className="h-6 w-6 text-emerald-accent mb-2" />
+                <span className="block text-[10px] text-gray-500 uppercase font-bold tracking-wider">Kamar Tidur</span>
+                <span className="font-bold text-gray-900">{project.typesList[0]?.bedrooms} - {project.typesList[project.typesList.length - 1]?.bedrooms} Kamar</span>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-gray-105 shadow-xs">
+                <Bath className="h-6 w-6 text-emerald-accent mb-2" />
+                <span className="block text-[10px] text-gray-500 uppercase font-bold tracking-wider">Kamar Mandi</span>
+                <span className="font-bold text-gray-900">{project.typesList[0]?.bathrooms} - {project.typesList[project.typesList.length - 1]?.bathrooms} Toilet</span>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-gray-105 shadow-xs">
+                <ShieldCheck className="h-6 w-6 text-emerald-accent mb-2" />
+                <span className="block text-[10px] text-gray-500 uppercase font-bold tracking-wider">Sertifikat</span>
+                <span className="font-bold text-gray-900">SHM + PBG/IMB</span>
+              </div>
+              <div className="bg-emerald-primary text-white p-4 rounded-xl border border-emerald-800 shadow-xs">
+                <Tag className="h-6 w-6 text-gold-accent mb-2" />
+                <span className="block text-[10px] text-white/70 uppercase font-bold tracking-wider">Harga Mulai</span>
+                <span className="font-bold font-mono text-gold-accent">{formatIDRCompact(project.priceStart)}</span>
               </div>
             </div>
           </section>
@@ -280,6 +327,21 @@ export default function ProjectDetailView({ projectSlug, setView }: ProjectDetai
                 </div>
               ))}
             </div>
+
+            {/* Mid-page CTA */}
+            <div className="flex flex-col sm:flex-row items-center justify-between p-6 bg-gold-accent/10 border border-gold-accent/30 rounded-2xl gap-4">
+              <div>
+                <h4 className="font-display font-bold text-emerald-primary">Punya pertanyaan seputar spesifikasi?</h4>
+                <p className="text-xs text-gray-600 mt-1">Tim kami siap memberikan penjelasan lengkap via WhatsApp.</p>
+              </div>
+              <button
+                onClick={() => handleWhatsAppInquiry("bertanya informasi detail spesifikasi")}
+                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-primary hover:bg-emerald-accent text-white text-xs font-bold font-display tracking-wider uppercase shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap"
+              >
+                <MessageCircle className="h-4 w-4" />
+                Tanya Marketing
+              </button>
+            </div>
           </section>
 
           {/* Section D: Filterable Gallery Viewer */}
@@ -295,6 +357,21 @@ export default function ProjectDetailView({ projectSlug, setView }: ProjectDetai
             </div>
 
             <GalleryViewer images={project.imagesGallery} />
+          </section>
+
+          {/* Section: Installment Calculator Embedded */}
+          <section className="space-y-6 pt-4">
+            <div>
+              <span className="text-[10px] font-mono tracking-widest text-gold-accent font-bold uppercase block mb-1">
+                KALKULASI KEUANGAN
+              </span>
+              <h2 className="font-display font-bold text-2xl text-emerald-primary">
+                Simulasi Cicilan KPR
+              </h2>
+              <p className="text-xs text-gray-500 mt-1">Hitung estimasi angsuran bulanan Anda berdasarkan uang muka dan tenor cicilan.</p>
+            </div>
+            
+            <MortgageCalculator initialProjectSlug={project.slug} />
           </section>
 
           {/* Section E: Interactive Proximity Map of Amenities */}
@@ -394,6 +471,30 @@ export default function ProjectDetailView({ projectSlug, setView }: ProjectDetai
 
         </div>
       </div>
+
+      {/* Final Strong CTA Section */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 mb-8 relative z-10">
+        <div className="bg-emerald-primary rounded-3xl p-8 sm:p-12 shadow-2xl text-center border border-emerald-800 relative overflow-hidden">
+          <div className="absolute inset-0 bg-linear-to-tr from-emerald-950 via-emerald-primary to-emerald-accent/20 z-0" />
+          <div className="relative z-10">
+            <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-white mb-4">
+              Siap Memiliki Hunian Impian Anda?
+            </h2>
+            <p className="text-emerald-100 max-w-2xl mx-auto mb-8 text-sm leading-relaxed">
+              Dapatkan penawaran harga spesial, diskon DP, dan free biaya surat-surat untuk transaksi bulan ini. Jangan tunda lagi, wujudkan rumah idaman keluarga sekarang!
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <button
+                onClick={() => handleWhatsAppInquiry("menjadwalkan survey lokasi segera")}
+                className="px-8 py-4 bg-gold-accent hover:bg-gold-bright text-emerald-primary rounded-xl font-bold font-display uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5 cursor-pointer"
+              >
+                <CalendarCheck className="h-5 w-5" />
+                Jadwalkan Survey Sekarang
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

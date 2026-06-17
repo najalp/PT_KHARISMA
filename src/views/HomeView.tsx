@@ -1,5 +1,6 @@
-import { Award, ShieldCheck, CheckCircle2, PhoneCall, ArrowRight, Landmark, BadgeCheck, Users, HelpCircle } from "lucide-react";
+import { Award, ShieldCheck, CheckCircle2, PhoneCall, ArrowRight, Landmark, BadgeCheck, Users, HelpCircle, BedDouble, Bath, LandPlot, MessageCircle, CalendarCheck } from "lucide-react";
 import { COMPANY_DETAILS, ACTIVE_PROJECTS, TESTIMONIALS } from "../data/mockData";
+import TrustSection from "../components/TrustSection";
 
 interface HomeViewProps {
   setView: (view: string) => void;
@@ -70,27 +71,31 @@ export default function HomeView({ setView, setSelectedProjectSlug }: HomeViewPr
             </h1>
 
             <p className="mt-6 text-base sm:text-lg text-gray-300 leading-relaxed max-w-2xl">
-              PT Kharisma Bangun Banua menghadirkan portofolio perumahan modern berlegalitas SHM aman dan konstruksi prima. Mulai dari hunian elite berfasilitas premium hingga rumah tinggal terjangkau bersubsidi hemat untuk ASN dan keluarga muda.
+              PT Kharisma Bangun Banua menghadirkan portofolio perumahan modern berlegalitas SHM aman dan konstruksi prima. Mulai dari hunian elite berfasilitas premium hingga rumah tinggal terjangkau bersubsidi hemat.
             </p>
+
+            {/* Checklist Benefits */}
+            <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 text-sm text-gray-200 font-medium">
+              <div className="flex items-center gap-2"><CheckCircle2 className="h-4.5 w-4.5 text-emerald-400 shrink-0" /> Lokasi Strategis</div>
+              <div className="flex items-center gap-2"><CheckCircle2 className="h-4.5 w-4.5 text-emerald-400 shrink-0" /> DP Ringan KPR</div>
+              <div className="flex items-center gap-2"><CheckCircle2 className="h-4.5 w-4.5 text-emerald-400 shrink-0" /> Legalitas SHM Aman</div>
+              <div className="flex items-center gap-2"><CheckCircle2 className="h-4.5 w-4.5 text-emerald-400 shrink-0" /> Akses Mudah</div>
+            </div>
 
             <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <button
-                onClick={() => {
-                  setView("d-royal");
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-                className="px-8 py-4 rounded-xl bg-gold-accent hover:bg-gold-bright text-emerald-primary font-display font-bold text-sm tracking-wider uppercase shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 text-center cursor-pointer"
+                onClick={() => handleWhatsAppContact()}
+                className="px-8 py-4 rounded-xl bg-gold-accent hover:bg-gold-bright text-emerald-primary font-display font-bold text-sm tracking-wider uppercase shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 text-center flex items-center justify-center gap-2 cursor-pointer"
               >
-                Lihat Proyek Elite
+                <CalendarCheck className="h-4.5 w-4.5" />
+                Jadwalkan Survey
               </button>
               <button
-                onClick={() => {
-                  setView("pondok-kharisma");
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-                className="px-8 py-4 rounded-xl bg-emerald-accent hover:bg-transparent hover:border-white border border-transparent text-white font-display font-bold text-sm tracking-wider uppercase transition-all duration-300 text-center cursor-pointer"
+                onClick={() => handleWhatsAppContact()}
+                className="px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-display font-bold text-sm tracking-wider uppercase transition-all duration-300 transform hover:-translate-y-0.5 text-center flex items-center justify-center gap-2 cursor-pointer"
               >
-                Cari Rumah Subsidi/ASN
+                <MessageCircle className="h-4.5 w-4.5" />
+                Chat Marketing
               </button>
             </div>
           </div>
@@ -202,22 +207,40 @@ export default function HomeView({ setView, setSelectedProjectSlug }: HomeViewPr
                 </div>
 
                 {/* Project Snippet Body */}
-                <div className="p-6 sm:p-8 space-y-6">
-                  <p className="text-xs text-gray-500 leading-relaxed">
-                    {project.shortDescription}
-                  </p>
+                <div className="p-6 sm:p-8 space-y-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    <p className="text-xs text-gray-500 leading-relaxed mb-4">
+                      {project.shortDescription}
+                    </p>
 
-                  <div className="border-t border-gray-100 pt-5 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] text-gray-400 block uppercase font-semibold">Harga Mulai Dari:</span>
-                      <span className="font-display font-extrabold text-xl font-mono text-emerald-primary tracking-tight">
+                    {/* Key Features Icons */}
+                    <div className="flex items-center gap-4 py-3 border-y border-gray-100">
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-600">
+                        <BedDouble className="h-3.5 w-3.5 text-emerald-accent" />
+                        {project.typesList[0]?.bedrooms || 2} KT
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-600">
+                        <Bath className="h-3.5 w-3.5 text-emerald-accent" />
+                        {project.typesList[0]?.bathrooms || 1} KM
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-600">
+                        <LandPlot className="h-3.5 w-3.5 text-emerald-accent" />
+                        LT {project.typesList[0]?.landSize || 90}m²
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-2">
+                    <div className="mb-4 bg-emerald-50/50 p-3 rounded-xl border border-emerald-100/50">
+                      <span className="text-[10px] text-gray-500 block uppercase font-bold tracking-wider mb-0.5">Harga Mulai Dari:</span>
+                      <span className="font-display font-extrabold text-2xl font-mono text-emerald-primary tracking-tight">
                         {formatIDRCompact(project.priceStart)}
                       </span>
                     </div>
                     
                     <button
                       onClick={() => handleProjectClick(project.slug)}
-                      className="px-5 py-3 rounded-xl bg-emerald-light hover:bg-emerald-accent text-emerald-primary hover:text-white text-xs font-bold font-display tracking-wide uppercase transition-all flex items-center gap-2 cursor-pointer"
+                      className="w-full py-3.5 rounded-xl bg-emerald-primary hover:bg-emerald-accent text-white text-xs font-bold font-display tracking-wider uppercase shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
                     >
                       Buka Info Lengkap
                       <ArrowRight className="h-4 w-4" />
@@ -280,8 +303,11 @@ export default function HomeView({ setView, setSelectedProjectSlug }: HomeViewPr
         </div>
       </section>
 
+      {/* Insert Trust Section Before Final CTA */}
+      <TrustSection />
+
       {/* 6. Easy Finance Teaser Section */}
-      <section className="bg-emerald-950 text-white rounded-3xl max-w-7xl mx-auto px-6 py-12 sm:px-12 sm:py-16 mx-4 relative overflow-hidden shadow-2xl border border-emerald-900">
+      <section className="bg-emerald-950 text-white rounded-3xl max-w-7xl mx-auto px-6 py-12 sm:px-12 sm:py-16 mx-4 relative overflow-hidden shadow-2xl border border-emerald-900 mt-16">
         <div className="absolute inset-0 z-0 opacity-10">
           <img
             src="https://images.unsplash.com/photo-1541976844346-f18aeac57b06?auto=format&fit=crop&w=1200&q=80"
